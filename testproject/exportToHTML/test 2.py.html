@@ -1,0 +1,84 @@
+<html>
+<head>
+<title>test 2.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bcbec4;}
+.s1 { color: #cf8e6d;}
+.s2 { color: #7a7e85;}
+.s3 { color: #bcbec4;}
+.s4 { color: #2aacb8;}
+.s5 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+test 2.py</font>
+</center></td></tr></table>
+<pre>
+<span class="s1">import </span><span class="s0">requests </span><span class="s2"># for getting website</span>
+<span class="s1">import </span><span class="s0">time </span><span class="s2">#reapting the code</span>
+<span class="s1">import </span><span class="s0">bs4 </span><span class="s2">#for getting webiste</span>
+<span class="s1">import </span><span class="s0">os </span><span class="s2"># playing sound</span>
+
+<span class="s1">from </span><span class="s0">numpy </span><span class="s1">import </span><span class="s0">number</span>
+
+<span class="s2">#aiden showed me this thought it was cool</span>
+<span class="s0">number_wanted </span><span class="s3">= </span><span class="s4">310</span>
+
+
+
+
+
+<span class="s1">def </span><span class="s0">check_ufc_odds</span><span class="s3">(</span><span class="s0">url</span><span class="s3">,</span><span class="s0">tag</span><span class="s3">, </span><span class="s0">class_name</span><span class="s3">): </span><span class="s2">#function that parsing and gets the odds by adding to a new empty list</span>
+
+    <span class="s0">that_url </span><span class="s3">= </span><span class="s0">url</span>
+    <span class="s0">response </span><span class="s3">= </span><span class="s0">requests</span><span class="s3">.</span><span class="s0">get</span><span class="s3">(</span><span class="s0">that_url</span><span class="s3">) </span><span class="s2"># webpage</span>
+    <span class="s0">html_data </span><span class="s3">= </span><span class="s0">response</span><span class="s3">.</span><span class="s0">text </span><span class="s2">#  content</span>
+    <span class="s0">parsed_data </span><span class="s3">= </span><span class="s0">bs4</span><span class="s3">.</span><span class="s0">BeautifulSoup</span><span class="s3">(</span><span class="s0">html_data</span><span class="s3">, </span><span class="s5">'html.parser'</span><span class="s3">) </span><span class="s2"># parses</span>
+    <span class="s2">#find all the elements</span>
+    <span class="s0">odds_element </span><span class="s3">= </span><span class="s0">parsed_data</span><span class="s3">.</span><span class="s0">find_all</span><span class="s3">(</span><span class="s0">tag</span><span class="s3">, {</span><span class="s5">'class'</span><span class="s3">:</span><span class="s0">class_name</span><span class="s3">})</span>
+
+
+    <span class="s1">if </span><span class="s0">odds_element</span><span class="s3">: </span><span class="s2"># this if stament has a empty function that gets a code appened by going through a loop of the elemnt and adds it ot</span>
+        <span class="s0">odds_list </span><span class="s3">= [] </span><span class="s2">#empty list that holds odds</span>
+        <span class="s1">for </span><span class="s0">i </span><span class="s1">in </span><span class="s0">odds_element</span><span class="s3">:</span>
+            <span class="s0">odds_list</span><span class="s3">.</span><span class="s0">append</span><span class="s3">(</span><span class="s0">i</span><span class="s3">.</span><span class="s0">get_text</span><span class="s3">()) </span><span class="s2"># this loops appends to the odds_list</span>
+        <span class="s1">return </span><span class="s0">odds_list</span>
+
+
+<span class="s1">def </span><span class="s0">print_nice</span><span class="s3">(</span><span class="s0">my_list</span><span class="s3">): </span><span class="s2">#this takes the code and only prints the number i want insted of the whole string</span>
+    <span class="s2"># Nicely prints a list of items</span>
+    <span class="s1">for </span><span class="s0">item </span><span class="s1">in </span><span class="s0">my_list</span><span class="s3">:</span>
+        <span class="s0">print</span><span class="s3">(</span><span class="s0">item</span><span class="s3">)</span>
+
+<span class="s0">url </span><span class="s3">= </span><span class="s5">f&quot;https://www.ufc.com/event/ufc-</span><span class="s1">{</span><span class="s0">number_wanted</span><span class="s1">}</span><span class="s5">&quot; </span><span class="s2">#the url we are using</span>
+
+<span class="s0">list_of_tags </span><span class="s3">= </span><span class="s5">'span'</span>
+<span class="s0">class_name </span><span class="s3">= </span><span class="s5">'c-listing-fight__odds-amount' </span><span class="s2">#what im trying to find</span>
+
+<span class="s0">previous_odds </span><span class="s3">= </span><span class="s4">0 </span><span class="s2"># placeholder</span>
+<span class="s2">#put ths into a function</span>
+<span class="s1">while True</span><span class="s3">: </span><span class="s2"># while true is always true bc true = true</span>
+    <span class="s0">index </span><span class="s3">= </span><span class="s4">1 </span><span class="s2">#holds the fighter so it increases everytime and reset at the end</span>
+    <span class="s0">odds </span><span class="s3">= </span><span class="s0">check_ufc_odds</span><span class="s3">(</span><span class="s0">url</span><span class="s3">, </span><span class="s0">list_of_tags</span><span class="s3">, </span><span class="s0">class_name</span><span class="s3">)</span>
+    <span class="s1">if </span><span class="s0">odds</span><span class="s3">:</span>
+        <span class="s1">for </span><span class="s0">odd </span><span class="s1">in </span><span class="s0">odds</span><span class="s3">:</span>
+            <span class="s0">print</span><span class="s3">(</span><span class="s5">f'Fighter </span><span class="s1">{</span><span class="s0">index</span><span class="s1">}</span><span class="s5">: </span><span class="s1">{</span><span class="s0">odd</span><span class="s1">}</span><span class="s5">'</span><span class="s3">) </span><span class="s2">#prints the code with a f string so it update the fighter by one and the odds in the list</span>
+            <span class="s0">index </span><span class="s3">+= </span><span class="s4">1 </span><span class="s2">#updates fighter number</span>
+        <span class="s0">print</span><span class="s3">(</span><span class="s5">&quot;END OF LIST&quot;</span><span class="s3">) </span><span class="s2">#just to see where the list ends</span>
+
+    <span class="s1">if </span><span class="s0">previous_odds </span><span class="s3">!= </span><span class="s0">check_ufc_odds</span><span class="s3">(</span><span class="s0">url</span><span class="s3">, </span><span class="s0">list_of_tags</span><span class="s3">, </span><span class="s0">class_name</span><span class="s3">):</span>
+        <span class="s0">os</span><span class="s3">.</span><span class="s0">system</span><span class="s3">(</span><span class="s5">&quot;afplay sound.mp3&quot;</span><span class="s3">)  </span><span class="s2"># took from google last class</span>
+    <span class="s0">previous_odds </span><span class="s3">= </span><span class="s0">odds</span>
+
+        <span class="s2">#This see if the odds from the loop before is the not the same as the odds now it will play a sound</span>
+
+    <span class="s0">time</span><span class="s3">.</span><span class="s0">sleep</span><span class="s3">(</span><span class="s4">2</span><span class="s3">) </span><span class="s2">#repeats twenty twentyfve seonds learned from google</span>
+
+
+<span class="s2">#fix this</span></pre>
+</body>
+</html>
